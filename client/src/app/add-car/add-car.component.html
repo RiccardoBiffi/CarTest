@@ -1,0 +1,24 @@
+<rz-content #content1 container="main">
+  <div class="row">
+    <div class="col-md-12">
+      <rz-form #form0 [style]="{}" (cancel)="form0Cancel($event)" (submit)="form0Submit($event)">
+        <rz-lookup-form-field [data]="getCategoriesResult" placeholder="Choose Category" property="CategoryId" [required]="true" requiredText="is required" textProperty="Name" title="Category" valueProperty="Id" multipleItemsSelectedText="{0} items selected" emptyFilterText="No results found" type="lookup">
+        </rz-lookup-form-field>
+        <rz-string-form-field [maxLength]="50" property="Make" [required]="true" requiredText="is required" title="Make" type="string">
+        </rz-string-form-field>
+        <rz-string-form-field [maxLength]="50" property="Model" [required]="true" requiredText="is required" title="Model" type="string">
+        </rz-string-form-field>
+        <rz-file-form-field property="Picture" [required]="true" requiredText="is required" title="Picture" chooseText="Choose" type="file">
+        </rz-file-form-field>
+        <rz-boolean-form-field defaultValue="false" property="AirConditioning" [required]="true" requiredText="is required" title="Air Conditioning" type="boolean">
+        </rz-boolean-form-field>
+        <rz-integer-form-field maxText="cannot be more than" minText="cannot be less than" property="Passengers" [required]="true" requiredText="is required" title="Passengers" type="integer">
+        </rz-integer-form-field>
+        <rz-integer-form-field maxText="cannot be more than" minText="cannot be less than" property="Doors" [required]="true" requiredText="is required" title="Doors" type="integer">
+        </rz-integer-form-field>
+        <rz-boolean-form-field defaultValue="false" property="IsAutomatic" [required]="true" requiredText="is required" title="Is Automatic" type="boolean">
+        </rz-boolean-form-field>
+      </rz-form>
+    </div>
+  </div>
+</rz-content>

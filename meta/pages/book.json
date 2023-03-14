@@ -1,0 +1,270 @@
+{
+  "access": [
+    "Everybody"
+  ],
+  "components": [
+    {
+      "type": "content",
+      "container": "main",
+      "components": [
+        {
+          "type": "heading",
+          "name": "pageTitle",
+          "size": "H1",
+          "text": "Book"
+        },
+        {
+          "components": [
+            {
+              "class": "col-md-4",
+              "components": [
+                {
+                  "name": "label0",
+                  "text": "FROM:",
+                  "type": "label"
+                },
+                {
+                  "name": "label1",
+                  "style": {
+                    "fontWeight": "bold"
+                  },
+                  "text": "${start}",
+                  "type": "label"
+                }
+              ],
+              "name": "col0",
+              "type": "col"
+            },
+            {
+              "class": "col-md-4",
+              "components": [
+                {
+                  "name": "label2",
+                  "text": "TO:",
+                  "type": "label"
+                },
+                {
+                  "name": "label3",
+                  "style": {
+                    "fontWeight": "bold"
+                  },
+                  "text": "${end}",
+                  "type": "label"
+                }
+              ],
+              "name": "col1",
+              "type": "col"
+            },
+            {
+              "class": "col-md-4 text-xl-right",
+              "components": [
+                {
+                  "events": {
+                    "click": [
+                      {
+                        "condition": "",
+                        "name": "submit",
+                        "type": "set",
+                        "value": "true"
+                      },
+                      {
+                        "condition": "this.Customer != \"\"",
+                        "name": "RadzenRentacar.createOrder",
+                        "parameters": [
+                          {
+                            "name": "Order",
+                            "value": "<any>{CarId: this.Car.Id, OrderDate: new Date(), StartDate: new Date(this.start), EndDate: new Date(this.end), Description: this.Customer + '/' + this.Car.Make + ' ' + this.Car.Model}"
+                          }
+                        ],
+                        "then": [
+                          {
+                            "type": "back"
+                          },
+                          {
+                            "code": "setTimeout(() => window.location.reload(true), 500);",
+                            "condition": "",
+                            "type": "execute"
+                          }
+                        ],
+                        "type": "invoke"
+                      }
+                    ]
+                  },
+                  "icon": "assignment_turned_in",
+                  "name": "button0",
+                  "text": "Book",
+                  "type": "button"
+                }
+              ],
+              "name": "col2",
+              "type": "col"
+            }
+          ],
+          "name": "row0",
+          "type": "row"
+        },
+        {
+          "components": [
+            {
+              "class": "col-md-4",
+              "components": [
+                {
+                  "name": "label4",
+                  "text": "Customer Name:",
+                  "type": "label"
+                }
+              ],
+              "name": "col5",
+              "type": "col"
+            },
+            {
+              "class": "col-md-8",
+              "components": [
+                {
+                  "name": "textbox0",
+                  "placeholder": "",
+                  "style": {
+                    "width": "100%"
+                  },
+                  "type": "textbox",
+                  "value": "${Customer}"
+                }
+              ],
+              "name": "col6",
+              "type": "col"
+            }
+          ],
+          "name": "row2",
+          "style": {
+            "marginTop": "10px"
+          },
+          "type": "row"
+        },
+        {
+          "components": [
+            {
+              "class": "col-md-4",
+              "name": "col7",
+              "type": "col"
+            },
+            {
+              "class": "col-md-8",
+              "components": [
+                {
+                  "component": "textbox0",
+                  "name": "label5",
+                  "style": {
+                    "color": "#ff0000"
+                  },
+                  "text": "Customer name is required!",
+                  "type": "label",
+                  "visible": "${Customer == \"\" && submit}"
+                }
+              ],
+              "name": "col8",
+              "type": "col"
+            }
+          ],
+          "name": "row3",
+          "type": "row"
+        },
+        {
+          "components": [
+            {
+              "components": [
+                {
+                  "class": "col-md-8",
+                  "components": [
+                    {
+                      "content": "<img src=\"${Car.Picture}\" width=\"100%\" height=\"100%\" />",
+                      "name": "html0",
+                      "type": "html"
+                    }
+                  ],
+                  "name": "col3",
+                  "type": "col"
+                },
+                {
+                  "class": "col-md-4",
+                  "components": [
+                    {
+                      "content": "Total: <b>{{ total | currency }}</b>",
+                      "name": "html1",
+                      "type": "html",
+                      "visible": ""
+                    }
+                  ],
+                  "name": "col4",
+                  "type": "col"
+                }
+              ],
+              "name": "row1",
+              "type": "row"
+            }
+          ],
+          "icon": "",
+          "name": "fieldset0",
+          "text": "${Car.Make + \" \" + Car.Model}",
+          "type": "fieldset",
+          "visible": ""
+        }
+      ]
+    }
+  ],
+  "events": {
+    "load": [
+      {
+        "condition": "",
+        "name": "start",
+        "type": "set",
+        "value": "${new Date(this.parameters.start).toLocaleDateString()}"
+      },
+      {
+        "name": "end",
+        "type": "set",
+        "value": "${new Date(this.parameters.end).toLocaleDateString()}"
+      },
+      {
+        "name": "days",
+        "type": "set",
+        "value": "${Math.floor(( Date.parse(this.parameters.end) - Date.parse(this.parameters.start) ) / 86400000)}"
+      },
+      {
+        "condition": "",
+        "name": "Customer",
+        "type": "set",
+        "value": "\"\""
+      },
+      {
+        "error": [],
+        "name": "RadzenRentacar.getCars",
+        "parameters": [
+          {
+            "name": "$filter",
+            "value": "Id eq ${parameters.CarId}"
+          },
+          {
+            "name": "$expand",
+            "value": "Category"
+          }
+        ],
+        "then": [
+          {
+            "name": "Car",
+            "type": "set",
+            "value": "${result.value[0]}"
+          },
+          {
+            "condition": "",
+            "name": "total",
+            "type": "set",
+            "value": "${this.days * this.Car.Category.DailyRate}"
+          }
+        ],
+        "type": "invoke"
+      }
+    ]
+  },
+  "name": "Book",
+  "layout": "Main"
+}

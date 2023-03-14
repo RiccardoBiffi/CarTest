@@ -1,0 +1,55 @@
+{
+  "dataSources": [
+    "RadzenRentacar"
+  ],
+  "generator": "@radzen/angular-generator",
+  "https": false,
+  "logo": "",
+  "name": "CarTest",
+  "navigation": [
+    "Cars",
+    "Categories",
+    "Orders",
+    "Find a Car",
+    "About"
+  ],
+  "layouts": [
+    "Main",
+    "Login"
+  ],
+  "pages": [
+    "Cars",
+    "Add Car",
+    "Edit Car",
+    "Categories",
+    "Add Category",
+    "Edit Category",
+    "Orders",
+    "Add Order",
+    "Edit Order",
+    "Login",
+    "Application Users",
+    "Application Roles",
+    "Register Application User",
+    "Add Application Role",
+    "Add Application User",
+    "Edit Application User",
+    "Profile",
+    "Unauthorized",
+    "Find a Car",
+    "Book",
+    "About"
+  ],
+  "security": {
+    "autoGeneratePages": true,
+    "dataSource": "RadzenRentacar",
+    "loginPage": "Login",
+    "provider": "default",
+    "duration": 5
+  },
+  "serverProject": true,
+  "startPage": "Find a Car",
+  "theme": "default",
+  "serverVersion": "7",
+  "serverLang": "cs"
+}

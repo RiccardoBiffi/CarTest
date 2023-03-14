@@ -1,0 +1,438 @@
+{
+  "access": [
+    "Everybody"
+  ],
+  "components": [
+    {
+      "type": "content",
+      "container": "main",
+      "components": [
+        {
+          "type": "heading",
+          "name": "pageTitle",
+          "size": "H1",
+          "text": "Find a Car"
+        },
+        {
+          "class": "justify-content-start align-items-end",
+          "components": [
+            {
+              "class": "col-md-3",
+              "components": [
+                {
+                  "component": "datepicker0",
+                  "name": "label1",
+                  "text": "PICKUP TIME:",
+                  "type": "label",
+                  "visible": ""
+                },
+                {
+                  "name": "datepicker0",
+                  "placeholder": "",
+                  "selectionMode": "single",
+                  "showTime": true,
+                  "style": {
+                    "width": "100%"
+                  },
+                  "type": "datepicker",
+                  "value": "${start}"
+                }
+              ],
+              "name": "col1",
+              "type": "col"
+            },
+            {
+              "class": "col-md-3",
+              "components": [
+                {
+                  "component": "datepicker1",
+                  "name": "label2",
+                  "text": "RETURN TIME:",
+                  "type": "label"
+                },
+                {
+                  "name": "datepicker1",
+                  "showTime": true,
+                  "style": {
+                    "width": "100%"
+                  },
+                  "type": "datepicker",
+                  "value": "${end}",
+                  "visible": ""
+                }
+              ],
+              "name": "col2",
+              "type": "col"
+            },
+            {
+              "class": "col-md-3",
+              "components": [
+                {
+                  "events": {
+                    "click": [
+                      {
+                        "name": "RadzenRentacar.getAvailableCars",
+                        "parameters": [
+                          {
+                            "name": "$skip",
+                            "value": "0"
+                          },
+                          {
+                            "name": "$top",
+                            "value": "this.grid0.allowPaging ? this.grid0.pageSize : null"
+                          },
+                          {
+                            "name": "$count",
+                            "value": "true"
+                          },
+                          {
+                            "name": "StartDate",
+                            "value": "${start.toISOString()}"
+                          },
+                          {
+                            "name": "EndDate",
+                            "value": "${end.toISOString()}"
+                          }
+                        ],
+                        "then": [
+                          {
+                            "name": "getCarsResult",
+                            "type": "set",
+                            "value": "${result.value}"
+                          },
+                          {
+                            "condition": "",
+                            "name": "getCarsCount",
+                            "type": "set",
+                            "value": "${result.value.length}"
+                          }
+                        ],
+                        "type": "invoke"
+                      }
+                    ]
+                  },
+                  "icon": "search",
+                  "name": "button0",
+                  "text": "Find",
+                  "type": "button",
+                  "visible": ""
+                }
+              ],
+              "name": "col5",
+              "type": "col"
+            }
+          ],
+          "name": "row0",
+          "style": {},
+          "type": "row"
+        },
+        {
+          "class": "justify-content-center align-items-center",
+          "components": [
+            {
+              "class": "col-md-12",
+              "components": [
+                {
+                  "items": [
+                    {
+                      "components": [
+                        {
+                          "allowFiltering": true,
+                          "allowPaging": true,
+                          "allowSorting": true,
+                          "columns": [
+                            {
+                              "filterProperty": "",
+                              "filterable": false,
+                              "property": "Picture",
+                              "sortProperty": "",
+                              "sortable": false,
+                              "template": "<img src=\"{{data?.Picture}}\" width=\"50%\" height=\"50%\" />",
+                              "title": "Picture",
+                              "type": "string"
+                            },
+                            {
+                              "property": "CategoryName",
+                              "title": "Category",
+                              "type": "string"
+                            },
+                            {
+                              "property": "Make",
+                              "title": "Make",
+                              "type": "string"
+                            },
+                            {
+                              "property": "Model",
+                              "title": "Model",
+                              "type": "string"
+                            },
+                            {
+                              "format": "decimal",
+                              "property": "DailyRate",
+                              "template": "{{ data.DailyRate | currency}}",
+                              "title": "Daily Rate",
+                              "type": "number"
+                            },
+                            {
+                              "filterProperty": "",
+                              "filterable": false,
+                              "sortable": false,
+                              "template": [
+                                {
+                                  "events": {
+                                    "click": [
+                                      {
+                                        "parameters": [
+                                          {
+                                            "name": "start",
+                                            "value": "${start.toISOString()}"
+                                          },
+                                          {
+                                            "name": "end",
+                                            "value": "${end.toISOString()}"
+                                          },
+                                          {
+                                            "name": "CarId",
+                                            "value": "${data.Id}"
+                                          }
+                                        ],
+                                        "path": "book",
+                                        "type": "popup"
+                                      }
+                                    ]
+                                  },
+                                  "icon": "assignment_turned_in",
+                                  "name": "button1",
+                                  "text": "Book",
+                                  "type": "button"
+                                }
+                              ],
+                              "width": 130
+                            }
+                          ],
+                          "count": "${getAvailableCarsCount}",
+                          "data": "${getAvailableCarsResult}",
+                          "emptyText": "No cars to display.",
+                          "events": {
+                            "loadData": [
+                              {
+                                "name": "RadzenRentacar.getAvailableCars",
+                                "parameters": [
+                                  {
+                                    "name": "$top",
+                                    "value": "this.grid0.allowPaging ? event.top : null"
+                                  },
+                                  {
+                                    "name": "$skip",
+                                    "value": "this.grid0.allowPaging ? event.skip : null"
+                                  },
+                                  {
+                                    "name": "$count",
+                                    "value": "this.grid0.allowPaging"
+                                  },
+                                  {
+                                    "name": "$filter",
+                                    "value": "${event.filter}"
+                                  },
+                                  {
+                                    "name": "$orderby",
+                                    "value": "${event.orderby}"
+                                  },
+                                  {
+                                    "name": "StartDate",
+                                    "value": "${start.toISOString()}"
+                                  },
+                                  {
+                                    "name": "EndDate",
+                                    "value": "${end.toISOString()}"
+                                  }
+                                ],
+                                "then": [
+                                  {
+                                    "name": "getAvailableCarsResult",
+                                    "type": "set",
+                                    "value": "${result.value}"
+                                  },
+                                  {
+                                    "name": "getAvailableCarsCount",
+                                    "type": "set",
+                                    "value": "this.grid0.allowPaging ? result['@odata.count'] : ${result.value.length}"
+                                  }
+                                ],
+                                "type": "invoke"
+                              }
+                            ]
+                          },
+                          "icon": "",
+                          "name": "grid0",
+                          "pageSize": 10,
+                          "template": [
+                            {
+                              "buttonPosition": "none",
+                              "data": "${data}",
+                              "fields": [
+                                {
+                                  "disabled": true,
+                                  "format": "",
+                                  "property": "AirConditioning",
+                                  "required": true,
+                                  "title": "Air Conditioning",
+                                  "type": "boolean"
+                                },
+                                {
+                                  "disabled": true,
+                                  "format": "",
+                                  "property": "Doors",
+                                  "required": true,
+                                  "title": "Doors",
+                                  "type": "integer"
+                                },
+                                {
+                                  "disabled": true,
+                                  "format": "",
+                                  "property": "IsAutomatic",
+                                  "required": true,
+                                  "title": "Is Automatic",
+                                  "type": "boolean"
+                                },
+                                {
+                                  "disabled": true,
+                                  "format": "",
+                                  "property": "Passengers",
+                                  "required": true,
+                                  "title": "Passengers",
+                                  "type": "integer"
+                                }
+                              ],
+                              "icon": "",
+                              "name": "form0",
+                              "type": "form"
+                            },
+                            {
+                              "components": [
+                                {
+                                  "class": "col-md-12 text-xl-right",
+                                  "components": [],
+                                  "name": "col8",
+                                  "type": "col"
+                                }
+                              ],
+                              "name": "row3",
+                              "type": "row"
+                            }
+                          ],
+                          "type": "grid"
+                        }
+                      ],
+                      "selected": true,
+                      "text": "Cars"
+                    },
+                    {
+                      "components": [
+                        {
+                          "data": "${getOrdersResult}",
+                          "endProperty": "EndDate",
+                          "idProperty": "Id",
+                          "name": "scheduler0",
+                          "startProperty": "StartDate",
+                          "titleProperty": "Description",
+                          "type": "scheduler"
+                        }
+                      ],
+                      "icon": "",
+                      "selected": false,
+                      "text": "Schedule"
+                    }
+                  ],
+                  "name": "tabs0",
+                  "style": {},
+                  "type": "tabs"
+                }
+              ],
+              "name": "col7",
+              "style": {
+                "marginTop": "15px"
+              },
+              "type": "col"
+            }
+          ],
+          "name": "row2",
+          "type": "row"
+        }
+      ]
+    }
+  ],
+  "events": {
+    "load": [
+      {
+        "condition": "",
+        "name": "start",
+        "type": "set",
+        "value": "new Date()"
+      },
+      {
+        "condition": "",
+        "name": "end",
+        "type": "set",
+        "value": "new Date(new Date().getTime() + 86400000 * 5)"
+      },
+      {
+        "name": "RadzenRentacar.getOrders",
+        "parameters": [
+          {
+            "name": "$expand",
+            "value": "Car"
+          }
+        ],
+        "then": [
+          {
+            "name": "getOrdersResult",
+            "type": "set",
+            "value": "${result.value}"
+          }
+        ],
+        "type": "invoke"
+      },
+      {
+        "name": "RadzenRentacar.getAvailableCars",
+        "parameters": [
+          {
+            "name": "$top",
+            "value": "this.grid0.allowPaging ? this.grid0.pageSize : null"
+          },
+          {
+            "name": "$skip",
+            "value": "this.grid0.allowPaging ? 0 : null"
+          },
+          {
+            "name": "$count",
+            "value": "this.grid0.allowPaging"
+          },
+          {
+            "name": "StartDate",
+            "value": "${start.toISOString()}"
+          },
+          {
+            "name": "EndDate",
+            "value": "${end.toISOString()}"
+          }
+        ],
+        "then": [
+          {
+            "name": "getAvailableCarsResult",
+            "type": "set",
+            "value": "${result.value}"
+          },
+          {
+            "name": "getAvailableCarsCount",
+            "type": "set",
+            "value": "this.grid0.allowPaging ? result['@odata.count'] : ${result.value.length}"
+          }
+        ],
+        "type": "invoke"
+      }
+    ]
+  },
+  "name": "Find a Car",
+  "layout": "Main"
+}

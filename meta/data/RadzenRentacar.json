@@ -1,0 +1,811 @@
+{
+  "info": {
+    "title": "RadzenRentacar",
+    "x-type": "odata",
+    "x-connector": "mssql",
+    "x-connector-version": 14
+  },
+  "definitions": {
+    "AvailableCar": {
+      "x-view": "sp",
+      "x-table": "dbo.availableCars",
+      "x-parameters": [
+        {
+          "name": "EndDate",
+          "type": "string",
+          "format": "date-time"
+        },
+        {
+          "name": "StartDate",
+          "type": "string",
+          "format": "date-time"
+        }
+      ],
+      "resource": "AvailableCars",
+      "required": [
+        "Id",
+        "CategoryId",
+        "Make",
+        "Model",
+        "AirConditioning",
+        "Doors",
+        "Passengers",
+        "IsAutomatic",
+        "Picture"
+      ],
+      "properties": {
+        "Id": {
+          "x-key": true,
+          "type": "integer"
+        },
+        "CategoryId": {
+          "x-key": false,
+          "type": "integer"
+        },
+        "Make": {
+          "x-key": false,
+          "type": "string",
+          "length": 100
+        },
+        "Model": {
+          "x-key": false,
+          "type": "string",
+          "length": 100
+        },
+        "AirConditioning": {
+          "x-key": false,
+          "type": "boolean"
+        },
+        "Doors": {
+          "x-key": false,
+          "type": "integer"
+        },
+        "Passengers": {
+          "x-key": false,
+          "type": "integer"
+        },
+        "IsAutomatic": {
+          "x-key": false,
+          "type": "boolean"
+        },
+        "Picture": {
+          "x-key": false,
+          "type": "string"
+        },
+        "CategoryName": {
+          "x-key": false,
+          "type": "string",
+          "length": 20
+        },
+        "DailyRate": {
+          "x-key": false,
+          "type": "number",
+          "format": "decimal"
+        }
+      }
+    },
+    "Car": {
+      "x-table": "dbo.Cars",
+      "resource": "Cars",
+      "required": [
+        "CategoryId",
+        "Make",
+        "Model",
+        "Picture",
+        "AirConditioning",
+        "Passengers",
+        "Doors",
+        "IsAutomatic"
+      ],
+      "properties": {
+        "Id": {
+          "x-key": true,
+          "x-identity": true,
+          "type": "integer",
+          "x-navigation": [
+            {
+              "inversePropertyName": "Car",
+              "name": "Orders",
+              "type": "Order"
+            }
+          ]
+        },
+        "CategoryId": {
+          "x-key": false,
+          "type": "integer",
+          "x-foreignKey": {
+            "parentTable": "Categories",
+            "parentEntityType": "Category",
+            "type": "Category",
+            "principalKey": "Id",
+            "name": "Category",
+            "textProperty": "Name",
+            "navigationProperty": "Cars"
+          }
+        },
+        "Make": {
+          "x-key": false,
+          "type": "string",
+          "length": 50
+        },
+        "Model": {
+          "x-key": false,
+          "type": "string",
+          "length": 50
+        },
+        "Picture": {
+          "x-key": false,
+          "type": "string"
+        },
+        "AirConditioning": {
+          "x-key": false,
+          "type": "boolean"
+        },
+        "Passengers": {
+          "x-key": false,
+          "type": "integer"
+        },
+        "Doors": {
+          "x-key": false,
+          "type": "integer"
+        },
+        "IsAutomatic": {
+          "x-key": false,
+          "type": "boolean"
+        },
+        "Orders": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Order"
+          }
+        }
+      }
+    },
+    "Category": {
+      "x-table": "dbo.Categories",
+      "resource": "Categories",
+      "required": [
+        "Id",
+        "Name",
+        "DailyRate"
+      ],
+      "properties": {
+        "Id": {
+          "x-key": true,
+          "type": "integer",
+          "x-navigation": [
+            {
+              "inversePropertyName": "Category",
+              "name": "Cars",
+              "type": "Car"
+            }
+          ]
+        },
+        "Name": {
+          "x-key": false,
+          "type": "string",
+          "length": 10
+        },
+        "DailyRate": {
+          "x-key": false,
+          "type": "number",
+          "format": "decimal"
+        },
+        "Cars": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Car"
+          }
+        }
+      }
+    },
+    "Order": {
+      "x-table": "dbo.Orders",
+      "resource": "Orders",
+      "required": [
+        "OrderDate",
+        "StartDate",
+        "EndDate",
+        "Description",
+        "CarId"
+      ],
+      "properties": {
+        "Id": {
+          "x-key": true,
+          "x-identity": true,
+          "type": "integer"
+        },
+        "OrderDate": {
+          "x-key": false,
+          "type": "string",
+          "format": "date-time"
+        },
+        "StartDate": {
+          "x-key": false,
+          "type": "string",
+          "format": "date-time"
+        },
+        "EndDate": {
+          "x-key": false,
+          "type": "string",
+          "format": "date-time"
+        },
+        "Description": {
+          "x-key": false,
+          "type": "string"
+        },
+        "CarId": {
+          "x-key": false,
+          "type": "integer",
+          "x-foreignKey": {
+            "parentTable": "Cars",
+            "parentEntityType": "Car",
+            "type": "Car",
+            "principalKey": "Id",
+            "name": "Car",
+            "textProperty": "Make",
+            "navigationProperty": "Orders"
+          }
+        }
+      }
+    }
+  },
+  "paths": {
+    "/AvailableCarsFunc(EndDate='{EndDate}',StartDate='{StartDate}')": {
+      "get": {
+        "operationId": "getAvailableCars",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "EndDate",
+            "type": "string"
+          },
+          {
+            "in": "path",
+            "name": "StartDate",
+            "type": "string"
+          },
+          {
+            "in": "query",
+            "name": "$filter",
+            "type": "string"
+          },
+          {
+            "in": "query",
+            "name": "$top",
+            "type": "integer"
+          },
+          {
+            "in": "query",
+            "name": "$skip",
+            "type": "integer"
+          },
+          {
+            "in": "query",
+            "name": "$orderby",
+            "type": "string"
+          },
+          {
+            "in": "query",
+            "name": "$count",
+            "type": "boolean"
+          },
+          {
+            "in": "query",
+            "name": "$expand",
+            "type": "string"
+          },
+          {
+            "in": "query",
+            "name": "$format",
+            "type": "string"
+          },
+          {
+            "in": "query",
+            "name": "$select",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "schema": {
+              "properties": {
+                "value": {
+                  "items": {
+                    "$ref": "#/definitions/AvailableCar"
+                  },
+                  "type": "array"
+                }
+              },
+              "type": "object"
+            }
+          },
+          "default": {
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          }
+        }
+      }
+    },
+    "/Cars": {
+      "get": {
+        "operationId": "getCars",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "$filter",
+            "type": "string"
+          },
+          {
+            "in": "query",
+            "name": "$top",
+            "type": "integer"
+          },
+          {
+            "in": "query",
+            "name": "$skip",
+            "type": "integer"
+          },
+          {
+            "in": "query",
+            "name": "$orderby",
+            "type": "string"
+          },
+          {
+            "in": "query",
+            "name": "$count",
+            "type": "boolean"
+          },
+          {
+            "in": "query",
+            "name": "$expand",
+            "type": "string"
+          },
+          {
+            "in": "query",
+            "name": "$format",
+            "type": "string"
+          },
+          {
+            "in": "query",
+            "name": "$select",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "schema": {
+              "properties": {
+                "value": {
+                  "items": {
+                    "$ref": "#/definitions/Car"
+                  },
+                  "type": "array"
+                }
+              },
+              "type": "object"
+            }
+          },
+          "default": {
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          }
+        }
+      },
+      "post": {
+        "operationId": "createCar",
+        "parameters": [
+          {
+            "in": "body",
+            "name": "Car",
+            "schema": {
+              "$ref": "#/definitions/Car"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "schema": {
+              "$ref": "#/definitions/Car"
+            }
+          },
+          "default": {
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          }
+        }
+      }
+    },
+    "/Categories": {
+      "get": {
+        "operationId": "getCategories",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "$filter",
+            "type": "string"
+          },
+          {
+            "in": "query",
+            "name": "$top",
+            "type": "integer"
+          },
+          {
+            "in": "query",
+            "name": "$skip",
+            "type": "integer"
+          },
+          {
+            "in": "query",
+            "name": "$orderby",
+            "type": "string"
+          },
+          {
+            "in": "query",
+            "name": "$count",
+            "type": "boolean"
+          },
+          {
+            "in": "query",
+            "name": "$expand",
+            "type": "string"
+          },
+          {
+            "in": "query",
+            "name": "$format",
+            "type": "string"
+          },
+          {
+            "in": "query",
+            "name": "$select",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "schema": {
+              "properties": {
+                "value": {
+                  "items": {
+                    "$ref": "#/definitions/Category"
+                  },
+                  "type": "array"
+                }
+              },
+              "type": "object"
+            }
+          },
+          "default": {
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          }
+        }
+      },
+      "post": {
+        "operationId": "createCategory",
+        "parameters": [
+          {
+            "in": "body",
+            "name": "Category",
+            "schema": {
+              "$ref": "#/definitions/Category"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "schema": {
+              "$ref": "#/definitions/Category"
+            }
+          },
+          "default": {
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          }
+        }
+      }
+    },
+    "/Orders": {
+      "get": {
+        "operationId": "getOrders",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "$filter",
+            "type": "string"
+          },
+          {
+            "in": "query",
+            "name": "$top",
+            "type": "integer"
+          },
+          {
+            "in": "query",
+            "name": "$skip",
+            "type": "integer"
+          },
+          {
+            "in": "query",
+            "name": "$orderby",
+            "type": "string"
+          },
+          {
+            "in": "query",
+            "name": "$count",
+            "type": "boolean"
+          },
+          {
+            "in": "query",
+            "name": "$expand",
+            "type": "string"
+          },
+          {
+            "in": "query",
+            "name": "$format",
+            "type": "string"
+          },
+          {
+            "in": "query",
+            "name": "$select",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "schema": {
+              "properties": {
+                "value": {
+                  "items": {
+                    "$ref": "#/definitions/Order"
+                  },
+                  "type": "array"
+                }
+              },
+              "type": "object"
+            }
+          },
+          "default": {
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          }
+        }
+      },
+      "post": {
+        "operationId": "createOrder",
+        "parameters": [
+          {
+            "in": "body",
+            "name": "Order",
+            "schema": {
+              "$ref": "#/definitions/Order"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "schema": {
+              "$ref": "#/definitions/Order"
+            }
+          },
+          "default": {
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          }
+        }
+      }
+    },
+    "/Cars({Id})": {
+      "delete": {
+        "operationId": "deleteCar",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "Id",
+            "type": "integer"
+          }
+        ],
+        "responses": {
+          "204": {},
+          "default": {
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          }
+        }
+      },
+      "get": {
+        "operationId": "getCarById",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "Id",
+            "type": "integer"
+          }
+        ],
+        "responses": {
+          "200": {
+            "schema": {
+              "$ref": "#/definitions/Car"
+            }
+          },
+          "default": {
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          }
+        }
+      },
+      "patch": {
+        "operationId": "updateCar",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "Id",
+            "type": "integer"
+          },
+          {
+            "in": "body",
+            "name": "Car",
+            "schema": {
+              "$ref": "#/definitions/Car"
+            }
+          }
+        ],
+        "responses": {
+          "204": {},
+          "default": {
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          }
+        }
+      }
+    },
+    "/Categories({Id})": {
+      "delete": {
+        "operationId": "deleteCategory",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "Id",
+            "type": "integer"
+          }
+        ],
+        "responses": {
+          "204": {},
+          "default": {
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          }
+        }
+      },
+      "get": {
+        "operationId": "getCategoryById",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "Id",
+            "type": "integer"
+          }
+        ],
+        "responses": {
+          "200": {
+            "schema": {
+              "$ref": "#/definitions/Category"
+            }
+          },
+          "default": {
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          }
+        }
+      },
+      "patch": {
+        "operationId": "updateCategory",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "Id",
+            "type": "integer"
+          },
+          {
+            "in": "body",
+            "name": "Category",
+            "schema": {
+              "$ref": "#/definitions/Category"
+            }
+          }
+        ],
+        "responses": {
+          "204": {},
+          "default": {
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          }
+        }
+      }
+    },
+    "/Orders({Id})": {
+      "delete": {
+        "operationId": "deleteOrder",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "Id",
+            "type": "integer"
+          }
+        ],
+        "responses": {
+          "204": {},
+          "default": {
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          }
+        }
+      },
+      "get": {
+        "operationId": "getOrderById",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "Id",
+            "type": "integer"
+          }
+        ],
+        "responses": {
+          "200": {
+            "schema": {
+              "$ref": "#/definitions/Order"
+            }
+          },
+          "default": {
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          }
+        }
+      },
+      "patch": {
+        "operationId": "updateOrder",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "Id",
+            "type": "integer"
+          },
+          {
+            "in": "body",
+            "name": "Order",
+            "schema": {
+              "$ref": "#/definitions/Order"
+            }
+          }
+        ],
+        "responses": {
+          "204": {},
+          "default": {
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          }
+        }
+      }
+    }
+  },
+  "basePath": "/odata/RadzenRentacar",
+  "host": "localhost:5000",
+  "schemes": [
+    "http"
+  ]
+}

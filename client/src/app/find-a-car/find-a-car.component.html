@@ -1,0 +1,74 @@
+<rz-content #content1 container="main">
+  <rz-heading #pageTitle size="H1" text="Find a Car">
+  </rz-heading>
+  <div class="row justify-content-start align-items-end" [ngStyle]="{}">
+    <div class="col-md-3">
+      <rz-label #label1 component="datepicker0" text="PICKUP TIME:">
+      </rz-label>
+      <rz-datepicker #datepicker0 selectionMode="single" [showTime]="true" [style]="{'width': '100%'}" [(ngModel)]="start" name="datepicker0">
+      </rz-datepicker>
+    </div>
+    <div class="col-md-3">
+      <rz-label #label2 component="datepicker1" text="RETURN TIME:">
+      </rz-label>
+      <rz-datepicker #datepicker1 [showTime]="true" [style]="{'width': '100%'}" [(ngModel)]="end" name="datepicker1">
+      </rz-datepicker>
+    </div>
+    <div class="col-md-3">
+      <rz-button #button0 icon="search" text="Find" (click)="button0Click($event)">
+      </rz-button>
+    </div>
+  </div>
+  <div class="row justify-content-center align-items-center">
+    <div class="col-md-12" [ngStyle]="{'marginTop': '15px'}">
+      <rz-tabs #tabs0 [style]="{}">
+        <rz-tabs-item [selected]="true" text="Cars">
+          <rz-grid #grid0 [allowFiltering]="true" [allowPaging]="true" [allowSorting]="true" [count]="getAvailableCarsCount" [data]="getAvailableCarsResult" emptyText="No cars to display." [pageSize]="10" (loadData)="grid0LoadData($event)">
+            <rz-grid-column [filterable]="false" property="Picture" [sortable]="false" title="Picture" type="string">
+              <ng-template let-data gridColumnTemplate>
+              <img src="{{data?.Picture}}" width="50%" height="50%" />
+              </ng-template>
+            </rz-grid-column>
+            <rz-grid-column property="CategoryName" title="Category" type="string">
+            </rz-grid-column>
+            <rz-grid-column property="Make" title="Make" type="string">
+            </rz-grid-column>
+            <rz-grid-column property="Model" title="Model" type="string">
+            </rz-grid-column>
+            <rz-grid-column format="decimal" property="DailyRate" title="Daily Rate" type="number">
+              <ng-template let-data gridColumnTemplate>
+              {{ data.DailyRate | currency}}
+              </ng-template>
+            </rz-grid-column>
+            <rz-grid-column [filterable]="false" [sortable]="false" [width]="130">
+              <ng-template let-data gridColumnTemplate>
+                <rz-button #button1 icon="assignment_turned_in" text="Book" (click)="button1Click($event, data)">
+                </rz-button>
+              </ng-template>
+            </rz-grid-column>
+            <ng-template let-data gridTemplate>
+              <rz-form #form0 buttonPosition="none" [data]="data">
+                <rz-boolean-form-field [disabled]="true" property="AirConditioning" [required]="true" title="Air Conditioning" type="boolean">
+                </rz-boolean-form-field>
+                <rz-integer-form-field [disabled]="true" property="Doors" [required]="true" title="Doors" type="integer">
+                </rz-integer-form-field>
+                <rz-boolean-form-field [disabled]="true" property="IsAutomatic" [required]="true" title="Is Automatic" type="boolean">
+                </rz-boolean-form-field>
+                <rz-integer-form-field [disabled]="true" property="Passengers" [required]="true" title="Passengers" type="integer">
+                </rz-integer-form-field>
+              </rz-form>
+              <div class="row">
+                <div class="col-md-12 text-xl-right">
+                </div>
+              </div>
+            </ng-template>
+          </rz-grid>
+        </rz-tabs-item>
+        <rz-tabs-item [selected]="false" text="Schedule">
+          <rz-scheduler #scheduler0 [data]="getOrdersResult" endProperty="EndDate" idProperty="Id" startProperty="StartDate" titleProperty="Description">
+          </rz-scheduler>
+        </rz-tabs-item>
+      </rz-tabs>
+    </div>
+  </div>
+</rz-content>

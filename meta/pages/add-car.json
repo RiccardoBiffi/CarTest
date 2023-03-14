@@ -1,0 +1,151 @@
+{
+  "components": [
+    {
+      "components": [
+        {
+          "components": [
+            {
+              "class": "col-md-12",
+              "components": [
+                {
+                  "data": "",
+                  "events": {
+                    "cancel": [
+                      {
+                        "type": "back"
+                      }
+                    ],
+                    "submit": [
+                      {
+                        "error": [
+                          {
+                            "detail": "Unable to create new Car!",
+                            "severity": "error",
+                            "summary": "Error",
+                            "type": "notify"
+                          }
+                        ],
+                        "name": "RadzenRentacar.createCar",
+                        "parameters": [
+                          {
+                            "name": "Car",
+                            "value": "${event}"
+                          }
+                        ],
+                        "then": [
+                          {
+                            "path": "cars",
+                            "type": "navigate"
+                          }
+                        ],
+                        "type": "invoke"
+                      }
+                    ]
+                  },
+                  "fields": [
+                    {
+                      "data": "${getCategoriesResult}",
+                      "placeholder": "Choose Category",
+                      "property": "CategoryId",
+                      "required": true,
+                      "requiredText": "is required",
+                      "textProperty": "Name",
+                      "title": "Category",
+                      "type": "lookup",
+                      "valueProperty": "Id"
+                    },
+                    {
+                      "maxLength": 50,
+                      "property": "Make",
+                      "required": true,
+                      "requiredText": "is required",
+                      "title": "Make",
+                      "type": "string"
+                    },
+                    {
+                      "maxLength": 50,
+                      "property": "Model",
+                      "required": true,
+                      "requiredText": "is required",
+                      "title": "Model",
+                      "type": "string"
+                    },
+                    {
+                      "property": "Picture",
+                      "required": true,
+                      "requiredText": "is required",
+                      "title": "Picture",
+                      "type": "file"
+                    },
+                    {
+                      "defaultValue": "false",
+                      "property": "AirConditioning",
+                      "required": true,
+                      "requiredText": "is required",
+                      "title": "Air Conditioning",
+                      "type": "boolean"
+                    },
+                    {
+                      "maxText": "cannot be more than",
+                      "minText": "cannot be less than",
+                      "property": "Passengers",
+                      "required": true,
+                      "requiredText": "is required",
+                      "title": "Passengers",
+                      "type": "integer"
+                    },
+                    {
+                      "maxText": "cannot be more than",
+                      "minText": "cannot be less than",
+                      "property": "Doors",
+                      "required": true,
+                      "requiredText": "is required",
+                      "title": "Doors",
+                      "type": "integer"
+                    },
+                    {
+                      "defaultValue": "false",
+                      "property": "IsAutomatic",
+                      "required": true,
+                      "requiredText": "is required",
+                      "title": "Is Automatic",
+                      "type": "boolean"
+                    }
+                  ],
+                  "name": "form0",
+                  "style": {},
+                  "type": "form"
+                }
+              ],
+              "type": "col"
+            }
+          ],
+          "type": "row"
+        }
+      ],
+      "container": "main",
+      "type": "content"
+    }
+  ],
+  "events": {
+    "load": [
+      {
+        "name": "RadzenRentacar.getCategories",
+        "parameters": [],
+        "then": [
+          {
+            "name": "getCategoriesResult",
+            "type": "set",
+            "value": "${result.value}"
+          }
+        ],
+        "type": "invoke"
+      }
+    ]
+  },
+  "layout": "Main",
+  "name": "Add Car",
+  "access": [
+    "Authenticated"
+  ]
+}

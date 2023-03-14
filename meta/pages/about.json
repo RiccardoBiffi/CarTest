@@ -1,0 +1,52 @@
+{
+  "access": [
+    "Everybody"
+  ],
+  "components": [
+    {
+      "type": "content",
+      "container": "main",
+      "components": [
+        {
+          "type": "heading",
+          "name": "pageTitle",
+          "size": "H1",
+          "text": "About"
+        },
+        {
+          "content": "<p>This is a sample car rental application created with <a href=\"https://www.radzen.com\">Radzen</a> without writing a single line of code.</p><p>The application consists of two parts:</p> <ul><li>Back-end ASP.NET Core C# application which exposes a Microsoft SQL Server database as an OData service.</li><li>Front-end Angular application.</li></ul><p>CRUD pages for the Cars, Categories, Orders tables are automatically generated during database schema infer. Those pages are available if you login using <strong>admin/admin</strong>.</p><p>The <strong>Find a Car</strong>, <strong>Book</strong> and <strong>About</strong> pages are the public part of the application and are created via the Radzen visual designer. The <strong>Find</strong> button invokes a Microsoft SQL Server stored procedure that returns the cars available in the specified range</p> <p>To book a car click <strong>Book</strong> in the last DataGrid column to open the booking popup, enter a name and click <strong>Book</strong> again. To view booked cars use the Schedule tab.</p>",
+          "name": "html0",
+          "type": "html",
+          "visible": ""
+        },
+        {
+          "components": [
+            {
+              "content": "<ul>\n<li><a href=\"https://angular.io\">Angular</a></li>\n<li><a href=\"https://docs.microsoft.com/en-us/aspnet/core/\">ASP.NET Core</a></li>\n<li><a href=\"http://www.odata.org/\">OData</a></li>\n<li><a href=\"https://www.microsoft.com/en-us/sql-server/sql-server-2017\">Microsoft SQL Server</a></li>\n</ul>",
+              "name": "html1",
+              "type": "html",
+              "visible": ""
+            }
+          ],
+          "name": "fieldset1",
+          "text": "Technologies used:",
+          "type": "fieldset"
+        },
+        {
+          "components": [
+            {
+              "content": "<ul>\n<li><a href=\"https://www.radzen.com/documentation/datagrid/\">DataGrid</a></li>\n<li><a href=\"https://www.radzen.com/documentation/form/\">Form</a></li>\n<li><a href=\"https://www.radzen.com/documentation/tabs/\">Tabs</a></li>\n<li><a href=\"https://www.radzen.com/documentation/scheduler/\">Scheduler</a></li>\n<li><a href=\"https://www.radzen.com/documentation/datepicker/\">DatePicker</a></li>\n<li><a href=\"https://www.radzen.com/documentation/dropdown/\">DropDown</a></li>\n<li><a href=\"https://www.radzen.com/documentation/upload/\">Upload</a></li>\n<li><a href=\"https://www.radzen.com/documentation/button/\">Button</a></li>\n<li><a href=\"https://www.radzen.com/documentation/textbox/\">TextBox</a></li>\n<li><a href=\"https://www.radzen.com/documentation/label/\">Label</a></li>\n<li><a href=\"https://www.radzen.com/documentation/fieldset/\">Fieldset</a></li>\n<li><a href=\"https://www.radzen.com/documentation/html/\">HTML</a></li>\n</ul>",
+              "name": "html2",
+              "type": "html"
+            }
+          ],
+          "name": "fieldset0",
+          "text": "Components used:",
+          "type": "fieldset"
+        }
+      ]
+    }
+  ],
+  "name": "About",
+  "layout": "Main"
+}

@@ -1,0 +1,54 @@
+<rz-content #content1 container="main">
+  <rz-heading #pageTitle size="H1" text="Book">
+  </rz-heading>
+  <div class="row">
+    <div class="col-md-4">
+      <rz-label #label0 text="FROM:">
+      </rz-label>
+      <rz-label #label1 [style]="{'fontWeight': 'bold'}" [text]="start">
+      </rz-label>
+    </div>
+    <div class="col-md-4">
+      <rz-label #label2 text="TO:">
+      </rz-label>
+      <rz-label #label3 [style]="{'fontWeight': 'bold'}" [text]="end">
+      </rz-label>
+    </div>
+    <div class="col-md-4 text-xl-right">
+      <rz-button #button0 icon="assignment_turned_in" text="Book" (click)="button0Click($event)">
+      </rz-button>
+    </div>
+  </div>
+  <div [ngStyle]="{'marginTop': '10px'}" class="row">
+    <div class="col-md-4">
+      <rz-label #label4 text="Customer Name:">
+      </rz-label>
+    </div>
+    <div class="col-md-8">
+      <rz-textbox #textbox0 [style]="{'width': '100%'}" [(ngModel)]="Customer" name="textbox0">
+      </rz-textbox>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-4">
+    </div>
+    <div class="col-md-8">
+      <rz-label #label5 component="textbox0" [style]="{'color': '#ff0000'}" text="Customer name is required!" *ngIf="(Customer == '') && submit">
+      </rz-label>
+    </div>
+  </div>
+  <rz-fieldset #fieldset0 [text]="(Car?.Make + ' ') + Car?.Model">
+    <div class="row">
+      <div class="col-md-8">
+        <rz-html #html0>
+          <img src="{{Car?.Picture}}" width="100%" height="100%" />
+        </rz-html>
+      </div>
+      <div class="col-md-4">
+        <rz-html #html1>
+          Total: <b>{{ total | currency }}</b>
+        </rz-html>
+      </div>
+    </div>
+  </rz-fieldset>
+</rz-content>

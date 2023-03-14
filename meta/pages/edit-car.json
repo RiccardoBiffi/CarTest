@@ -1,0 +1,237 @@
+{
+  "components": [
+    {
+      "components": [
+        {
+          "components": [
+            {
+              "class": "col-md-9",
+              "components": [
+                {
+                  "name": "closeLabel",
+                  "style": {
+                    "fontWeight": "bold"
+                  },
+                  "text": "Item no longer available.",
+                  "type": "label",
+                  "visible": "${!canEdit}"
+                }
+              ],
+              "name": "col0",
+              "type": "col"
+            },
+            {
+              "class": "col-md-3",
+              "components": [
+                {
+                  "buttonStyle": "secondary",
+                  "events": {
+                    "click": [
+                      {
+                        "type": "back"
+                      }
+                    ]
+                  },
+                  "icon": "",
+                  "name": "closeButton",
+                  "style": {
+                    "marginBottom": "20px"
+                  },
+                  "text": "Close",
+                  "type": "button",
+                  "visible": "${!canEdit}"
+                }
+              ],
+              "name": "col1",
+              "type": "col"
+            }
+          ],
+          "name": "row0",
+          "style": {},
+          "type": "row"
+        },
+        {
+          "components": [
+            {
+              "class": "col-md-12",
+              "components": [
+                {
+                  "data": "${car}",
+                  "events": {
+                    "cancel": [
+                      {
+                        "type": "back"
+                      }
+                    ],
+                    "submit": [
+                      {
+                        "error": [
+                          {
+                            "name": "canEdit",
+                            "type": "set",
+                            "value": "!(result.status == 400)"
+                          },
+                          {
+                            "detail": "Unable to update Car",
+                            "severity": "error",
+                            "summary": "Error",
+                            "type": "notify"
+                          }
+                        ],
+                        "name": "RadzenRentacar.updateCar",
+                        "parameters": [
+                          {
+                            "name": "Id",
+                            "value": "${parameters.Id}"
+                          },
+                          {
+                            "name": "Car",
+                            "value": "${event}"
+                          }
+                        ],
+                        "then": [
+                          {
+                            "type": "back"
+                          }
+                        ],
+                        "type": "invoke"
+                      }
+                    ]
+                  },
+                  "fields": [
+                    {
+                      "data": "${getCategoriesResult}",
+                      "placeholder": "Choose Category",
+                      "property": "CategoryId",
+                      "required": true,
+                      "requiredText": "is required",
+                      "textProperty": "Name",
+                      "title": "Category",
+                      "type": "lookup",
+                      "valueProperty": "Id"
+                    },
+                    {
+                      "maxLength": 50,
+                      "property": "Make",
+                      "required": true,
+                      "requiredText": "is required",
+                      "title": "Make",
+                      "type": "string"
+                    },
+                    {
+                      "maxLength": 50,
+                      "property": "Model",
+                      "required": true,
+                      "requiredText": "is required",
+                      "title": "Model",
+                      "type": "string"
+                    },
+                    {
+                      "property": "Picture",
+                      "required": true,
+                      "requiredText": "is required",
+                      "title": "Picture",
+                      "type": "file"
+                    },
+                    {
+                      "defaultValue": "false",
+                      "property": "AirConditioning",
+                      "required": true,
+                      "requiredText": "is required",
+                      "title": "Air Conditioning",
+                      "type": "boolean"
+                    },
+                    {
+                      "maxText": "cannot be more than",
+                      "minText": "cannot be less than",
+                      "property": "Passengers",
+                      "required": true,
+                      "requiredText": "is required",
+                      "title": "Passengers",
+                      "type": "integer"
+                    },
+                    {
+                      "maxText": "cannot be more than",
+                      "minText": "cannot be less than",
+                      "property": "Doors",
+                      "required": true,
+                      "requiredText": "is required",
+                      "title": "Doors",
+                      "type": "integer"
+                    },
+                    {
+                      "defaultValue": "false",
+                      "property": "IsAutomatic",
+                      "required": true,
+                      "requiredText": "is required",
+                      "title": "Is Automatic",
+                      "type": "boolean"
+                    }
+                  ],
+                  "name": "form0",
+                  "style": {},
+                  "type": "form",
+                  "visible": "${canEdit}"
+                }
+              ],
+              "type": "col"
+            }
+          ],
+          "type": "row"
+        }
+      ],
+      "container": "main",
+      "type": "content"
+    }
+  ],
+  "events": {
+    "load": [
+      {
+        "name": "canEdit",
+        "type": "set",
+        "value": "true"
+      },
+      {
+        "error": [
+          {
+            "name": "canEdit",
+            "type": "set",
+            "value": "!(result.status == 400)"
+          }
+        ],
+        "name": "RadzenRentacar.getCarById",
+        "parameters": [
+          {
+            "name": "Id",
+            "value": "${parameters.Id}"
+          }
+        ],
+        "then": [
+          {
+            "name": "car",
+            "type": "set",
+            "value": "${result}"
+          }
+        ],
+        "type": "invoke"
+      },
+      {
+        "name": "RadzenRentacar.getCategories",
+        "parameters": [],
+        "then": [
+          {
+            "name": "getCategoriesResult",
+            "type": "set",
+            "value": "${result.value}"
+          }
+        ],
+        "type": "invoke"
+      }
+    ]
+  },
+  "layout": "Main",
+  "name": "Edit Car",
+  "access": [
+    "Authenticated"
+  ]
+}

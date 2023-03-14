@@ -1,0 +1,28 @@
+<rz-content #content1 container="main">
+  <div [ngStyle]="{}" class="row">
+    <div class="col-md-9">
+      <rz-label #closeLabel [style]="{'fontWeight': 'bold'}" text="Item no longer available." *ngIf="!canEdit">
+      </rz-label>
+    </div>
+    <div class="col-md-3">
+      <rz-button #closeButton buttonStyle="secondary" [style]="{'marginBottom': '20px'}" text="Close" *ngIf="!canEdit" (click)="closeButtonClick($event)">
+      </rz-button>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-12">
+      <rz-form #form0 [data]="order" *ngIf="canEdit" (cancel)="form0Cancel($event)" (submit)="form0Submit($event)">
+        <rz-date-form-field property="OrderDate" [required]="true" title="Order Date" requiredText="is required" type="date">
+        </rz-date-form-field>
+        <rz-date-form-field property="StartDate" [required]="true" title="Start Date" requiredText="is required" type="date">
+        </rz-date-form-field>
+        <rz-date-form-field property="EndDate" [required]="true" title="End Date" requiredText="is required" type="date">
+        </rz-date-form-field>
+        <rz-string-form-field property="Description" [required]="true" title="Description" requiredText="is required" type="string">
+        </rz-string-form-field>
+        <rz-lookup-form-field [data]="getCarsResult" property="CarId" [required]="true" textProperty="Make" title="Car" valueProperty="Id" placeholder="Choose Car" requiredText="is required" multipleItemsSelectedText="{0} items selected" emptyFilterText="No results found" type="lookup">
+        </rz-lookup-form-field>
+      </rz-form>
+    </div>
+  </div>
+</rz-content>

@@ -1,0 +1,14 @@
+<rz-content #content1 container="main">
+  <div class="row">
+    <div class="col-md-12">
+      <rz-form #form0 (cancel)="form0Cancel($event)" (submit)="form0Submit($event)">
+        <rz-integer-form-field property="Id" [required]="true" title="Id" requiredText="is required" minText="cannot be less than" maxText="cannot be more than" type="integer">
+        </rz-integer-form-field>
+        <rz-string-form-field property="Name" [required]="true" title="Name" [maxLength]="10" requiredText="is required" type="string">
+        </rz-string-form-field>
+        <rz-number-form-field property="DailyRate" [required]="true" title="Daily Rate" requiredText="is required" minText="cannot be less than" maxText="cannot be more than" type="number">
+        </rz-number-form-field>
+      </rz-form>
+    </div>
+  </div>
+</rz-content>

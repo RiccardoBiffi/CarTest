@@ -1,0 +1,222 @@
+{
+  "components": [
+    {
+      "type": "content",
+      "container": "main",
+      "components": [
+        {
+          "type": "heading",
+          "name": "pageTitle",
+          "size": "H1",
+          "text": "Orders"
+        },
+        {
+          "type": "row",
+          "components": [
+            {
+              "type": "col",
+              "class": "col-md-12",
+              "components": [
+                {
+                  "name": "grid0",
+                  "allowDelete": true,
+                  "allowAdd": true,
+                  "allowFiltering": true,
+                  "allowMultiSorting": false,
+                  "allowPaging": true,
+                  "allowSorting": true,
+                  "count": "${getOrdersCount}",
+                  "data": "${getOrdersResult}",
+                  "events": {
+                    "loadData": [
+                      {
+                        "name": "RadzenRentacar.getOrders",
+                        "parameters": [
+                          {
+                            "name": "$top",
+                            "value": "event.top"
+                          },
+                          {
+                            "name": "$skip",
+                            "value": "event.skip"
+                          },
+                          {
+                            "name": "$expand",
+                            "value": "Car"
+                          },
+                          {
+                            "name": "$count",
+                            "value": "event.top != null && event.skip != null"
+                          },
+                          {
+                            "name": "$filter",
+                            "value": "${event.filter}"
+                          },
+                          {
+                            "name": "$orderby",
+                            "value": "${event.orderby}"
+                          },
+                          {
+                            "name": "$expand",
+                            "value": "Car"
+                          }
+                        ],
+                        "then": [
+                          {
+                            "name": "getOrdersResult",
+                            "type": "set",
+                            "value": "${result.value}"
+                          },
+                          {
+                            "name": "getOrdersCount",
+                            "type": "set",
+                            "value": "event.top != null && event.skip != null ? result['@odata.count'] : ${result.value.length}"
+                          }
+                        ],
+                        "type": "invoke"
+                      }
+                    ],
+                    "delete": [
+                      {
+                        "error": [
+                          {
+                            "detail": "Unable to delete Order",
+                            "severity": "error",
+                            "summary": "Error",
+                            "type": "notify"
+                          }
+                        ],
+                        "name": "RadzenRentacar.deleteOrder",
+                        "parameters": [
+                          {
+                            "name": "Id",
+                            "value": "${event.Id}"
+                          }
+                        ],
+                        "then": [
+                          {
+                            "detail": "Order deleted!",
+                            "severity": "success",
+                            "summary": "Success",
+                            "type": "notify"
+                          }
+                        ],
+                        "type": "invoke"
+                      }
+                    ],
+                    "add": [
+                      {
+                        "path": "add-order",
+                        "type": "popup"
+                      }
+                    ],
+                    "rowSelect": [
+                      {
+                        "parameters": [
+                          {
+                            "name": "Id",
+                            "value": "${event.Id}"
+                          }
+                        ],
+                        "path": "edit-order",
+                        "type": "popup"
+                      }
+                    ]
+                  },
+                  "title": "",
+                  "columns": [
+                    {
+                      "property": "Id",
+                      "title": "Id",
+                      "type": "integer"
+                    },
+                    {
+                      "format": "date-time",
+                      "property": "OrderDate",
+                      "template": "${data.OrderDate | utcDate}",
+                      "title": "Order Date",
+                      "type": "string"
+                    },
+                    {
+                      "format": "date-time",
+                      "property": "StartDate",
+                      "template": "${data.StartDate | utcDate}",
+                      "title": "Start Date",
+                      "type": "string"
+                    },
+                    {
+                      "format": "date-time",
+                      "property": "EndDate",
+                      "template": "${data.EndDate | utcDate}",
+                      "title": "End Date",
+                      "type": "string"
+                    },
+                    {
+                      "property": "Description",
+                      "title": "Description",
+                      "type": "string"
+                    },
+                    {
+                      "property": "CarId",
+                      "sortProperty": "Car.Make",
+                      "filterProperty": "Car.Make",
+                      "template": "${data.Car?.Make}",
+                      "title": "Car",
+                      "type": "string"
+                    }
+                  ],
+                  "type": "grid",
+                  "emptyText": "No records to display.",
+                  "addText": "Add"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "events": {
+    "load": [
+      {
+        "name": "RadzenRentacar.getOrders",
+        "parameters": [
+          {
+            "name": "$top",
+            "value": "this.grid0.allowPaging ? this.grid0.pageSize : null"
+          },
+          {
+            "name": "$skip",
+            "value": "this.grid0.allowPaging ? 0 : null"
+          },
+          {
+            "name": "$count",
+            "value": "this.grid0.allowPaging"
+          },
+          {
+            "name": "$expand",
+            "value": "Car"
+          }
+        ],
+        "then": [
+          {
+            "name": "getOrdersResult",
+            "type": "set",
+            "value": "${result.value}"
+          },
+          {
+            "name": "getOrdersCount",
+            "type": "set",
+            "value": "this.grid0.allowPaging ? result['@odata.count'] : ${result.value.length}"
+          }
+        ],
+        "type": "invoke"
+      }
+    ]
+  },
+  "name": "Orders",
+  "layout": "Main",
+  "access": [
+    "Authenticated"
+  ]
+}
